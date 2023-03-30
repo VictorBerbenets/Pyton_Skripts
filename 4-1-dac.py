@@ -10,8 +10,12 @@ def dac2bin(a):
 def Enter():
     try:
         value = input()
+        if value == "q":
+            return -2
+        if (not value.isdigit()):
+            print("invalid data\n")
+            return -1
         arg = int(value)
-
         if (arg > 255):
             print('Error: number must be <= 255')
             return -1
@@ -20,7 +24,7 @@ def Enter():
             return -1
         else:
             return arg
-    except:
+    except Exception:
         if value == "q":
             return -2
         else:
@@ -30,12 +34,13 @@ def Enter():
 try:
     while (True):
         value = Enter()
-        if value != -1:
+
+        if value == -2:
+            break
+        elif value != -1:
             bin_num = dac2bin(value)
             GPIO.output(dac, bin_num)
             print(round(3.3 / 256 * value, 3), " B")
-        elif value == -2:
-            break
 
 finally:
     GPIO.output(dac, 0)
